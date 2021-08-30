@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+.bar {
+  background-color: black;
+  fill: red;
+}
+.bar:hover {
+  fill: white;
+}
+#barTwo {
+  fill: blue;
+}
