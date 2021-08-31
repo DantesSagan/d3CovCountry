@@ -46,3 +46,6 @@
 #barTwo {
   fill: blue;
 }
+#barTwo:hover {
+  fill: white;
+}
