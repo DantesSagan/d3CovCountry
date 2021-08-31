@@ -3,11 +3,13 @@ export default function Main() {
     <div>
       <h1
         className='text-4xl mt-28 p-10
-      space-x-4 rounded-lg p-8 border-4 border-green-900 shadow-inner font-mono text-3xl
+      space-x-4 rounded-lg p-8 border-4 border-black shadow-inner text-3xl
       main
       '
       >
-        Hello! This is COVID 2019 data about Russian Federation.
+        Здравствуйте, это визуализированная статистика заразившихся COVID 2019
+        в Российской Федерации. <br />В периоде с COVID 2019 с 2020.03 -
+        2021.08.
       </h1>{' '}
       <span>
         <span>

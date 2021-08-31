@@ -13,6 +13,9 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -27,7 +30,7 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root" style="margin-left: 350px;margin-right:350;"></div>
+  <div id="root" class="margin"></div>
   <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -38,6 +41,128 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+  <style>
+    #root {
+      font-family: 'STIX Two Math', serif;
+    }
+    .margin {
+      text-align: center;
+      margin-right: 400px;
+      margin-left: 400px;
+    }
+
+    @media only screen and (max-width: 1480px) {
+      .margin {
+        text-align: center;
+        margin-right: 335px;
+        margin-left: 335px;
+      }
+    }
+
+    @media only screen and (max-width: 1440px) {
+      .margin {
+        text-align: center;
+        margin-right: 325px;
+        margin-left: 325px;
+      }
+    }
+
+    @media only screen and (max-width: 1340px) {
+      .margin {
+        text-align: center;
+        margin-right: 225px;
+        margin-left: 225px;
+      }
+    }
+
+    @media only screen and (max-width: 1285px) {
+      .margin {
+        text-align: center;
+        margin-right: 215px;
+        margin-left: 215px;
+      }
+    }
+
+    @media only screen and (max-width: 1185px) {
+      .margin {
+        text-align: center;
+        margin-right: 210px;
+        margin-left: 210px;
+      }
+    }
+
+    @media only screen and (max-width: 1140px) {
+      .margin {
+        text-align: center;
+        margin-right: 205px;
+        margin-left: 205px;
+      }
+    }
+
+    @media only screen and (max-width: 1100px) {
+      .margin {
+        text-align: center;
+        margin-right: 200px;
+        margin-left: 200px;
+      }
+    }
+
+    @media only screen and (max-width: 1064px) {
+      .margin {
+        text-align: center;
+        margin-right: 150px;
+        margin-left: 150px;
+      }
+    }
+
+    @media only screen and (max-width: 1024px) {
+      .margin {
+        text-align: center;
+        margin-right: 125px;
+        margin-left: 125px;
+      }
+    }
+
+    @media only screen and (max-width: 924px) {
+      .margin {
+        text-align: center;
+        margin-right: 95px;
+        margin-left: 95px;
+      }
+    }
+
+    @media only screen and (max-width: 864px) {
+      .margin {
+        text-align: center;
+        margin-right: 90px;
+        margin-left: 90px;
+      }
+    }
+
+    @media only screen and (max-width: 768px) {
+      .margin {
+        text-align: center;
+        margin-right: 75px;
+        margin-left: 75px;
+      }
+    }
+
+    @media only screen and (max-width: 425px) {
+      .margin {
+        text-align: center;
+        margin-right: 45px;
+        margin-left: 45px;
+      }
+    }
+
+    @media only screen and (max-width: 320px) {
+      .margin {
+        text-align: center;
+        margin-right: 15px;
+        margin-left: 15px;
+      }
+    }
+  </style>
 </body>
 
 </html>

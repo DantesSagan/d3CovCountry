@@ -33,7 +33,7 @@ export default function EveryDay() {
     let xAxisScale;
     let yAxisScaleTwo;
 
-    let svg = d3.select('#div2');
+    let svg = d3.select('#div2').attr('id', 'corona');
 
     const infoText = () => {
       let textContainer = d3
@@ -51,10 +51,11 @@ export default function EveryDay() {
 
       textContainer
         .append('text')
-        .attr('x', width - 730)
+        .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации');
+        .text('COVID 2019 в Российской Федерации(Заражённые)')
+        .style('font-size', '1.5em');
     };
 
     const drawCanvas = () => {
@@ -116,6 +117,7 @@ export default function EveryDay() {
         .append('rect')
         .attr('class', 'bar')
         .attr('id', 'barTwo')
+        .attr('id', 'corona')
         .attr('width', (width - 2 * padding) / values.length)
         .attr('date', (item) => {
           return item.date;
@@ -135,7 +137,7 @@ export default function EveryDay() {
         .on('mouseover', (item) => {
           tooltip.transition().style('visibility', 'visible');
           tooltip.text(
-            item.date + ' year/month - ' + item.new_cases + ' New Cases'
+            item.date + ' год/месяц - ' + item.new_cases + ' Новые случаи'
           );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
@@ -165,10 +167,18 @@ export default function EveryDay() {
     };
   }, []);
   return (
-    <svg className='App' id='div2'>
-      <text x={width - 820} y={height - 20}>
-        hello
-      </text>
-    </svg>
+    <div>
+      <h2 className='text-center text-4xl p-4'>
+        Статистика ежедневных заражений COVID 2019 с 2020.03 - 2021.08
+      </h2>
+      <svg className='App' id='div2'>
+        <text x={width - 900} y={height - 20}>
+         Больше информации:{' '}
+          <a href='https://ourworldindata.org/coronavirus#coronavirus-country-profiles'>
+            https://ourworldindata.org/coronavirus#coronavirus-country-profiles
+          </a>
+        </text>
+      </svg>
+    </div>
   );
 }

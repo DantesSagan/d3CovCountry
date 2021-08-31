@@ -7,6 +7,9 @@ export default function TotalCases() {
     'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
   );
   const [req] = useState(new XMLHttpRequest());
+  const width = 1200;
+  const height = 600;
+  const padding = 120;
   useEffect(() => {
     req.open('GET', url, true);
     req.onload = () => {
@@ -28,11 +31,7 @@ export default function TotalCases() {
     let xAxisScale;
     let yAxisScale;
 
-    const width = 1200;
-    const height = 600;
-    const padding = 90;
-
-    let svg = d3.select('#div1');
+    let svg = d3.select('#div1').attr('id', 'corona');
 
     const infoText = () => {
       let textContainer = d3
@@ -45,15 +44,15 @@ export default function TotalCases() {
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('x', -350)
-        .attr('y', 125)
+        .attr('y', 150)
         .text('Общая статистика(млн)');
 
       textContainer
         .append('text')
-        .attr('x', width - 750)
+        .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации(Заражённые)');
+        .text('COVID 2019 в Российской Федерации(Заражённые)').style('font-size','1.5em');
     };
 
     const drawCanvas = () => {
@@ -135,7 +134,7 @@ export default function TotalCases() {
         .on('mouseover', (item) => {
           tooltip.transition().style('visibility', 'visible');
           tooltip.text(
-            item.date + ' year/month  - ' + item.total_cases + ' Total Cases'
+            item.date + ' год/месяц - ' + item.total_cases + ' Общее количество'
           );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
@@ -167,10 +166,18 @@ export default function TotalCases() {
   }, []);
 
   return (
-    <svg className='App' id='div1'>
-      <text x={1200 - 820} y={600 - 20}>
-        hello
-      </text>
-    </svg>
+    <div>
+      <h2 className='text-center text-4xl p-4'>
+        Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
+      </h2>
+      <svg className='App' id='div1'>
+        <text x={width - 900} y={height - 20}>
+          Больше информации:{' '}
+          <a href='https://ourworldindata.org/coronavirus#coronavirus-country-profiles'>
+            https://ourworldindata.org/coronavirus#coronavirus-country-profiles
+          </a>
+        </text>
+      </svg>
+    </div>
   );
 }

@@ -19,7 +19,7 @@ const FallbackContainer = styled.div`
   background: rgb(0, 70, 54);
   background: radial-gradient(
     circle,
-    #77a1d3 0%,
+     white 0%,
     #79cbca 61%,
     transparent 100%
   );
