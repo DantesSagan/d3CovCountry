@@ -10,6 +10,7 @@
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "d3": "^5.16.0",
+    "d3-transition": "^3.0.1",
     "daisyui": "^1.14.0",
     "postcss": "^7.0.36",
     "react": "^17.0.2",

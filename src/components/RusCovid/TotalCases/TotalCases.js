@@ -53,7 +53,8 @@ export default function TotalCases() {
         .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации(Заражённые)').style('font-size','1.5em');
+        .text('COVID 2019 в Российской Федерации(Заражённые)')
+        .style('font-size', '1.5em');
     };
 
     const drawCanvas = () => {
@@ -103,7 +104,7 @@ export default function TotalCases() {
 
     const drawBars = () => {
       const tooltip = d3
-        .select('body')
+        .select('.hoverHolder')
         .append('div')
         .attr('id', 'tooltip')
         .style('visibility', 'hidden')
@@ -116,7 +117,7 @@ export default function TotalCases() {
         .enter()
         .append('rect')
         .attr('class', 'bar')
-        .attr('id','barOne')
+        .attr('id', 'barOne')
         .attr('width', (width - 2 * padding) / values.length)
         .attr('date', (item) => {
           return item.date;
@@ -133,16 +134,20 @@ export default function TotalCases() {
         .attr('y', (item) => {
           return height - padding - heightScale(item.total_cases);
         })
-        .on('mouseover', (item) => {
-          tooltip.transition().style('visibility', 'visible');
-          tooltip.text(
-            item.date + ' год/месяц - ' + item.total_cases + ' Общее количество'
+        .attr('transform', 'translate(60, 0)')
+        .on('mouseover', (item, i) => {
+          tooltip.transition().duration(200).style('visibility', 'visible');
+          tooltip.html(
+            item.date +
+              ' Год/День/Месяц' +
+              '</br>' +
+              item.total_cases +
+              ' Общее количество'
           );
-
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
         .on('mouseout', () => {
-          tooltip.transition().style('visibility', 'hidden');
+          tooltip.transition().duration(200).style('visibility', 'hidden');
         });
     };
 
@@ -181,6 +186,7 @@ export default function TotalCases() {
           </a>
         </text>
       </svg>
+      <div className='hoverHolder shadow-inner rounded-t-lg font-bold '></div>
     </div>
   );
 }

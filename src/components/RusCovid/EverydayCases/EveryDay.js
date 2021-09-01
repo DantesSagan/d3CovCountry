@@ -104,7 +104,7 @@ export default function EveryDay() {
 
     const drawBars = () => {
       const tooltip = d3
-        .select('body')
+        .select('.hoverHolder')
         .append('div')
         .attr('id', 'tooltip')
         .style('visibility', 'hidden')
@@ -137,7 +137,11 @@ export default function EveryDay() {
         .on('mouseover', (item) => {
           tooltip.transition().style('visibility', 'visible');
           tooltip.text(
-            item.date + ' год/месяц - ' + item.new_cases + ' Новые случаи'
+            item.date +
+              ' Год/День/Месяц' +
+              '</br>' +
+              item.new_cases +
+              ' Новые случаи'
           );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
@@ -180,6 +184,7 @@ export default function EveryDay() {
           </a>
         </text>
       </svg>
+      <div className='hoverHolder shadow-inner rounded-t-lg font-bold '></div>
     </div>
   );
 }
