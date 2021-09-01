@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import Header2 from '../../Header2';
 
-export default function TotalCases() {
+export default function DeathTotalCases() {
   const [url] = useState(
     'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
   );
@@ -46,14 +46,15 @@ export default function TotalCases() {
         .attr('transform', 'rotate(-90)')
         .attr('x', -350)
         .attr('y', 150)
-        .text('Общая статистика(млн)');
+        .text('Общая статистика(тыс.)');
 
       textContainer
         .append('text')
         .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации(Заражённые)').style('font-size','1.5em');
+        .text('COVID 2019 в Российской Федерации(Смертности)')
+        .style('font-size', '1.5em');
     };
 
     const drawCanvas = () => {
@@ -66,7 +67,7 @@ export default function TotalCases() {
         .domain([
           0,
           d3.max(values, (item) => {
-            return item.total_cases;
+            return item.total_deaths;
           }),
         ])
         .range([0, height - 2 * padding]);
@@ -93,7 +94,7 @@ export default function TotalCases() {
         .domain([
           0,
           d3.max(values, (item) => {
-            return item.total_cases;
+            return item.total_deaths;
           }),
         ])
         .range([height - padding, padding]);
@@ -116,27 +117,30 @@ export default function TotalCases() {
         .enter()
         .append('rect')
         .attr('class', 'bar')
-        .attr('id','barOne')
+        .attr('id', 'barOneDeath')
         .attr('width', (width - 2 * padding) / values.length)
         .attr('date', (item) => {
           return item.date;
         })
-        .attr('cases_total', (item) => {
-          return item.total_cases;
+        .attr('total_deaths', (item) => {
+          return item.total_deaths;
         })
         .attr('height', (item) => {
-          return heightScale(item.total_cases);
+          return heightScale(item.total_deaths);
         })
         .attr('x', (item, i) => {
           return xScale(i);
         })
         .attr('y', (item) => {
-          return height - padding - heightScale(item.total_cases);
+          return height - padding - heightScale(item.total_deaths);
         })
         .on('mouseover', (item) => {
           tooltip.transition().style('visibility', 'visible');
           tooltip.text(
-            item.date + ' год/месяц - ' + item.total_cases + ' Общее количество'
+            item.date +
+              ' день/месяц - ' +
+              item.total_deaths +
+              ' Общее количество'
           );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
@@ -171,7 +175,7 @@ export default function TotalCases() {
     <div>
       <Header2 />
       <h2 className='text-center text-4xl p-4'>
-        Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
+        Общая статистика смертности COVID 2019 с 2020.03 - 2021.08
       </h2>
       <svg className='App' id='div1'>
         <text x={width - 900} y={height - 20}>

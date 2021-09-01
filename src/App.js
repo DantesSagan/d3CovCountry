@@ -14,7 +14,12 @@ const TotalCases = lazy(() =>
 const EveryDay = lazy(() =>
   import('./components/RusCovid/EverydayCases/EveryDay')
 );
-
+const DeathTotalCases = lazy(() =>
+  import('./components/RusCovid/DeathTotalCases/DeathTotalCases')
+);
+const DeathEveryDay = lazy(() =>
+  import('./components/RusCovid/DeathEveryDay/DeathEveryDay')
+);
 export default function App() {
   return (
     <BrowserRouter>
@@ -24,6 +29,8 @@ export default function App() {
           <Route exact path='/' component={Main} />
           <Route path={ROUTES.TotalCases} component={TotalCases} />
           <Route path={ROUTES.EveryDay} component={EveryDay} />
+          <Route path={ROUTES.DeathTotalCases} component={DeathTotalCases} />
+          <Route path={ROUTES.DeathEveryDay} component={DeathEveryDay} />
         </Switch>
       </Suspense>
     </BrowserRouter>

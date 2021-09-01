@@ -4,17 +4,19 @@ import * as ROUTES from '../components/routes/routes';
 export default function Header() {
   return (
     <div>
-      <header className='mt-6'>
-        <nav className='grid grid-cols-1 rounded-t-lg p-2  shadow-inner gridCol '>
-          <div className='border border-black rounded-2xl'>
+      <header className='mt-6 '>
+        <nav className='grid grid-cols-1 rounded-t-lg p-2 py-3 px-6 shadow-inner gridCol font-bold '>
+          <div className='rounded-2xl'>
             <div className='button p-4 border border-green-800 rounded-2xl'>
               <Link to='/'>Главная страница</Link>
             </div>
             <div className='button p-2'>
-              <Link to={ROUTES.TotalCases}>Россия - общая статистика</Link>
+              <Link to={ROUTES.TotalCases}>
+                Российская Федерация - Статистика
+              </Link>
             </div>
             <div className='button p-2'>
-              <Link to={ROUTES.EveryDay}>Россия - ежедневная статистика</Link>
+              <Link>(Другие страны пока что не вошедние на сайт)</Link>
             </div>
           </div>
         </nav>

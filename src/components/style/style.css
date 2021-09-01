@@ -72,10 +72,10 @@ body {
   background: #fff;
   pointer-events: none;
 }
-.bar {
+#barOne {
   fill: red;
 }
-.bar:hover {
+#barOne:hover {
   fill: white;
 }
 #barTwo {
@@ -84,7 +84,12 @@ body {
 #barTwo:hover {
   fill: white;
 }
-
+#barOneDeath {
+  fill: black;
+}
+#barOneDeath:hover {
+  fill: white;
+}
 .gridCol {
   display: grid;
   grid-temptale-columns: repeat(3, 1fr);
@@ -133,6 +138,59 @@ body {
 }
 @media only screen and (max-width: 320px) {
   .gridCol {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.gridCo2l {
+  top: 100px;
+  display: grid;
+  grid-temptale-columns: repeat(3, 1fr);
+  font-size: 1.5em;
+}
+/* @MEDIA */
+@media only screen and (max-width: 1680px) {
+  .gridCol2 {
+    font-size: 1.25em;
+  }
+}
+@media only screen and (max-width: 1600px) {
+  .gridCol2 {
+    font-size: 1.25em;
+  }
+}
+@media only screen and (max-width: 1500px) {
+  .gridCol2 {
+    font-size: 1.25em;
+  }
+}
+
+@media only screen and (max-width: 924px) {
+  .gridCol2 {
+    font-size: 1.05em;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .gridCol2 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .gridCol2 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 375px) {
+  .gridCol2 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .gridCol2 {
     display: flex;
     flex-direction: column;
   }

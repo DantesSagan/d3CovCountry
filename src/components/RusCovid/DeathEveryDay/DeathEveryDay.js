@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import Header2 from '../../Header2';
 
-export default function TotalCases() {
+export default function DeathEveryDay() {
   const [url] = useState(
     'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
   );
   const [req] = useState(new XMLHttpRequest());
+
   const width = 1200;
   const height = 600;
-  const padding = 120;
+  const padding = 90;
   useEffect(() => {
     req.open('GET', url, true);
     req.onload = () => {
@@ -23,16 +24,17 @@ export default function TotalCases() {
       infoText();
     };
     req.send();
+
     let data;
     let values = [];
 
     let xScale;
-    let heightScale;
+    let heightScaleTwo;
 
     let xAxisScale;
-    let yAxisScale;
+    let yAxisScaleTwo;
 
-    let svg = d3.select('#div1').attr('id', 'corona');
+    let svg = d3.select('#div2').attr('id', 'corona');
 
     const infoText = () => {
       let textContainer = d3
@@ -46,14 +48,15 @@ export default function TotalCases() {
         .attr('transform', 'rotate(-90)')
         .attr('x', -350)
         .attr('y', 150)
-        .text('Общая статистика(млн)');
+        .text('Ежедневная статистика(ед./тыс.)');
 
       textContainer
         .append('text')
         .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации(Заражённые)').style('font-size','1.5em');
+        .text('COVID 2019 в Российской Федерации(Смертности)')
+        .style('font-size', '1.5em');
     };
 
     const drawCanvas = () => {
@@ -61,18 +64,16 @@ export default function TotalCases() {
       svg.attr('height', height);
     };
     const generateScales = () => {
-      heightScale = d3
+      heightScaleTwo = d3
         .scaleLinear()
         .domain([
           0,
           d3.max(values, (item) => {
-            return item.total_cases;
+            return item.new_deaths;
           }),
         ])
         .range([0, height - 2 * padding]);
-
-      console.log(heightScale);
-
+      console.log(heightScaleTwo);
       xScale = d3
         .scaleLinear()
         .domain([0, values.length - 1])
@@ -88,12 +89,12 @@ export default function TotalCases() {
         .domain([d3.min(dataDate), d3.max(dataDate)])
         .range([padding, width - padding]);
 
-      yAxisScale = d3
+      yAxisScaleTwo = d3
         .scaleLinear()
         .domain([
           0,
           d3.max(values, (item) => {
-            return item.total_cases;
+            return item.new_deaths;
           }),
         ])
         .range([height - padding, padding]);
@@ -116,27 +117,27 @@ export default function TotalCases() {
         .enter()
         .append('rect')
         .attr('class', 'bar')
-        .attr('id','barOne')
+        .attr('id', 'barOneDeath')
         .attr('width', (width - 2 * padding) / values.length)
         .attr('date', (item) => {
           return item.date;
         })
-        .attr('cases_total', (item) => {
-          return item.total_cases;
+        .attr('new_deaths', (item) => {
+          return item.new_deaths;
         })
         .attr('height', (item) => {
-          return heightScale(item.total_cases);
+          return heightScaleTwo(item.new_deaths);
         })
         .attr('x', (item, i) => {
           return xScale(i);
         })
         .attr('y', (item) => {
-          return height - padding - heightScale(item.total_cases);
+          return height - padding - heightScaleTwo(item.new_deaths);
         })
         .on('mouseover', (item) => {
           tooltip.transition().style('visibility', 'visible');
           tooltip.text(
-            item.date + ' год/месяц - ' + item.total_cases + ' Общее количество'
+            item.date + ' день/месяц - ' + item.new_deaths + ' Новые случаи'
           );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
@@ -148,7 +149,7 @@ export default function TotalCases() {
 
     const generateAxis = () => {
       const xAxis = d3.axisBottom(xAxisScale);
-      const yAxis = d3.axisLeft(yAxisScale);
+      const yAxisTwo = d3.axisLeft(yAxisScaleTwo);
       svg
         .append('g')
         .call(xAxis)
@@ -158,22 +159,20 @@ export default function TotalCases() {
 
       svg
         .append('g')
-        .call(yAxis)
+        .call(yAxisTwo)
         .attr('id', 'y-axis')
         .attr('transform', 'translate(' + padding + ',  0)')
         .style('font-size', '18px');
-
-      return { xAxis, svg, yAxis };
+      return { xAxis, svg, yAxisTwo };
     };
   }, []);
-
   return (
     <div>
       <Header2 />
       <h2 className='text-center text-4xl p-4'>
-        Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
+        Статистика ежедневных заражений COVID 2019 с 2020.03 - 2021.08
       </h2>
-      <svg className='App' id='div1'>
+      <svg className='App' id='div2'>
         <text x={width - 900} y={height - 20}>
           Больше информации:{' '}
           <a href='https://ourworldindata.org/coronavirus#coronavirus-country-profiles'>

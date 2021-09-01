@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
+import Header2 from '../../Header2';
 
 export default function EveryDay() {
   const [url] = useState(
@@ -117,7 +118,6 @@ export default function EveryDay() {
         .append('rect')
         .attr('class', 'bar')
         .attr('id', 'barTwo')
-        .attr('id', 'corona')
         .attr('width', (width - 2 * padding) / values.length)
         .attr('date', (item) => {
           return item.date;
@@ -168,12 +168,13 @@ export default function EveryDay() {
   }, []);
   return (
     <div>
+      <Header2 />
       <h2 className='text-center text-4xl p-4'>
         Статистика ежедневных заражений COVID 2019 с 2020.03 - 2021.08
       </h2>
       <svg className='App' id='div2'>
         <text x={width - 900} y={height - 20}>
-         Больше информации:{' '}
+          Больше информации:{' '}
           <a href='https://ourworldindata.org/coronavirus#coronavirus-country-profiles'>
             https://ourworldindata.org/coronavirus#coronavirus-country-profiles
           </a>
