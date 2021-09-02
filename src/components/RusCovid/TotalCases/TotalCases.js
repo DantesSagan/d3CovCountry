@@ -122,7 +122,7 @@ export default function TotalCases() {
         .attr('date', (item) => {
           return item.date;
         })
-        .attr('cases_total', (item) => {
+        .attr('total_cases', (item) => {
           return item.total_cases;
         })
         .attr('height', (item) => {
@@ -134,7 +134,6 @@ export default function TotalCases() {
         .attr('y', (item) => {
           return height - padding - heightScale(item.total_cases);
         })
-        .attr('transform', 'translate(60, 0)')
         .on('mouseover', (item, i) => {
           tooltip.transition().duration(200).style('visibility', 'visible');
           tooltip.html(

@@ -6,7 +6,6 @@ body {
 }
 
 #corona {
-  
   background-image: linear-gradient(
     240deg,
     white 0%,
@@ -65,8 +64,6 @@ body {
 }
 .hoverHolder{
   position: absolute;
-  bottom: 22em;
-  right: 52em;
 }
 .overlay {
   position: absolute;
