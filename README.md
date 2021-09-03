@@ -1,4 +1,4 @@
-# This site showing COVID 2019 visualization statisticks taken from 
+# This site showing COVID 2019 in Russia from 2020.03 - to 2021.08 visualization statistics, taken from 
 *_https://ourworldindata.org/coronavirus#coronavirus-country-profiles_*
 ## Also there are used:
 ### 1. React,
