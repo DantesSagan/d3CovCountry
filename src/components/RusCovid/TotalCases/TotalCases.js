@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
 import Header2 from '../../Header2';
+
+import { pointer } from 'd3-selection';
+import * as d3 from 'd3';
 
 export default function TotalCases() {
   const [url] = useState(
@@ -104,7 +106,7 @@ export default function TotalCases() {
 
     const drawBars = () => {
       const tooltip = d3
-        .select('.hoverHolder')
+        .select('body')
         .append('div')
         .attr('id', 'tooltip')
         .style('visibility', 'hidden')
@@ -134,15 +136,20 @@ export default function TotalCases() {
         .attr('y', (item) => {
           return height - padding - heightScale(item.total_cases);
         })
-        .on('mouseover', (item, i) => {
+        .on('mouseover', (event, item) => {
+          const [x, y] = pointer(event);
           tooltip.transition().duration(200).style('visibility', 'visible');
-          tooltip.html(
-            item.date +
-              ' Год/День/Месяц' +
-              '</br>' +
-              item.total_cases +
-              ' Общее количество'
-          );
+          tooltip
+            .html(
+              item.date +
+                ' -  Год/День/Месяц' +
+                '</br>' +
+                item.total_cases +
+                ' - Общее количество'
+            )
+            .style('left', x + 370 + 'px')
+            .style('top', y + 450 + 'px');
+
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
         .on('mouseout', () => {
@@ -185,7 +192,6 @@ export default function TotalCases() {
           </a>
         </text>
       </svg>
-      <div className='hoverHolder shadow-inner rounded-t-lg font-bold '></div>
     </div>
   );
 }

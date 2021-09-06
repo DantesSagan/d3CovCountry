@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
+
 import Header2 from '../../Header2';
+
+import { pointer } from 'd3-selection';
+import * as d3 from 'd3';
 
 export default function EveryDay() {
   const [url] = useState(
@@ -104,7 +107,7 @@ export default function EveryDay() {
 
     const drawBars = () => {
       const tooltip = d3
-        .select('.hoverHolder')
+        .select('body')
         .append('div')
         .attr('id', 'tooltip')
         .style('visibility', 'hidden')
@@ -134,15 +137,19 @@ export default function EveryDay() {
         .attr('y', (item) => {
           return height - padding - heightScaleTwo(item.new_cases);
         })
-        .on('mouseover', (item) => {
+        .on('mouseover', (event, item) => {
+          const [x, y] = pointer(event);
           tooltip.transition().style('visibility', 'visible');
-          tooltip.text(
-            item.date +
-              ' Год/День/Месяц' +
-              '</br>' +
-              item.new_cases +
-              ' Новые случаи'
-          );
+          tooltip
+            .html(
+              item.date +
+                ' - Год/День/Месяц' +
+                '</br>' +
+                item.new_cases +
+                ' - Новые случаи'
+            )
+            .style('left', x + 370 + 'px')
+            .style('top', y + 450 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

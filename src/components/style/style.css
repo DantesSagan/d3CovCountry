@@ -46,25 +46,21 @@ body {
   transition: 0.25;
   boxshadow: '3px 3px 5px black';
 }
-
 #tooltip {
-  height: 25px;
-  width: 50px;
   padding: 4px;
   font-size: 1em;
-  background: transparent;
-  border: 1px solid black;
-  border-radius: 10px;
-  color: black; 
+  position: absolute;
+  background: #79cbca;
+  border: 2px solid black;
+  border-radius: 15px;
+  color: black;
 }
 
 #info {
   border: 2px solid black;
   border-radius: 15px;
 }
-.hoverHolder{
-  position: absolute;
-}
+
 .overlay {
   position: absolute;
   background: #fff;

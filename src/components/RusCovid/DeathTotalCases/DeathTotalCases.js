@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import * as d3 from 'd3';
 import Header2 from '../../Header2';
+
+import { pointer } from 'd3-selection';
+import * as d3 from 'd3';
 
 export default function DeathTotalCases() {
   const [url] = useState(
@@ -134,14 +136,18 @@ export default function DeathTotalCases() {
         .attr('y', (item) => {
           return height - padding - heightScale(item.total_deaths);
         })
-        .on('mouseover', (item) => {
+        .on('mouseover', (event, item) => {
+          const [x, y] = pointer(event);
           tooltip.transition().style('visibility', 'visible');
-          tooltip.text(
-            item.date +
-              ' день/месяц - ' +
-              item.total_deaths +
-              ' Общее количество'
-          );
+          tooltip
+            .html(
+              item.date +
+                ' день/месяц <br/> ' +
+                item.total_deaths +
+                ' Общее количество'
+            )
+            .style('left', x + 350 + 'px')
+            .style('top', y + 450 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
