@@ -146,8 +146,8 @@ export default function DeathTotalCases() {
                 item.total_deaths +
                 ' Общее количество'
             )
-            .style('left', x + 350 + 'px')
-            .style('top', y + 450 + 'px');
+            .style('left', x[0] + 350 + 'px')
+            .style('top', y[1] + 450 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

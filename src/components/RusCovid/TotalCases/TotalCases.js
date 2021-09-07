@@ -112,7 +112,9 @@ export default function TotalCases() {
         .style('visibility', 'hidden')
         .style('width', 'auto')
         .style('height', 'auto');
-
+      // var mouse = d3.pointer(d3.select('body').node()).map(function (d) {
+      //   return parseInt(d);
+      // });
       svg
         .selectAll('rect')
         .data(values)
@@ -136,8 +138,10 @@ export default function TotalCases() {
         .attr('y', (item) => {
           return height - padding - heightScale(item.total_cases);
         })
-        .on('mouseover', (event, item) => {
+        .on('mousemove', (event, item) => {
           const [x, y] = pointer(event);
+          // const left = Math.min(width - 4 * item.date.length, x[0]);
+          // const top = Math.min(y[1]);
           tooltip.transition().duration(200).style('visibility', 'visible');
           tooltip
             .html(
@@ -147,8 +151,8 @@ export default function TotalCases() {
                 item.total_cases +
                 ' - Общее количество'
             )
-            .style('left', x + 370 + 'px')
-            .style('top', y + 450 + 'px');
+            .style('left', x[0] + 'px')
+            .style('top', y[1]  + 120 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

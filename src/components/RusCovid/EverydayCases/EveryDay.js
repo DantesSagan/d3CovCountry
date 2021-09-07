@@ -148,8 +148,8 @@ export default function EveryDay() {
                 item.new_cases +
                 ' - Новые случаи'
             )
-            .style('left', x + 370 + 'px')
-            .style('top', y + 450 + 'px');
+            .style('left', x[0] + 370 + 'px')
+            .style('top', y[1] + 450 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

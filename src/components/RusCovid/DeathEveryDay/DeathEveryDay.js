@@ -146,8 +146,8 @@ export default function DeathEveryDay() {
                 item.new_deaths +
                 ' - Новые случаи'
             )
-            .style('left', x + 370 + 'px')
-            .style('top', y + 470 + 'px');
+            .style('left', x[0] + 370 + 'px')
+            .style('top', y[1] + 470 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
