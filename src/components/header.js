@@ -16,7 +16,7 @@ export default function Header() {
               </Link>
             </div>
             <div className='button p-2'>
-              <Link>(Другие страны пока что не вошедние на сайт)</Link>
+              <Link to={ROUTES.UsaDeathTotalCases}>США - Статистика</Link>
             </div>
           </div>
         </nav>

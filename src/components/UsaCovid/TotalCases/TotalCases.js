@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import Header2 from '../../Header2';
 
 import { pointer } from 'd3-selection';
 import * as d3 from 'd3';
+import UsaHeader from '../../UsaHeader';
 
 export default function TotalCases() {
   const [url] = useState(
-    'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
+    'https://gist.githubusercontent.com/DantesSagan/fd05ceffb3a32c2bc4008000168d98a6/raw/e8f0294d7571ec81d297544fc6b94db3f26f3069/CovidUsa.json'
   );
   const [req] = useState(new XMLHttpRequest());
   const width = 1200;
@@ -35,7 +35,9 @@ export default function TotalCases() {
     let yAxisScale;
 
     let svg = d3.select('#div1').attr('id', 'corona');
-
+    const validNumber = (num) => {
+      return num.toString().replace(/(?=\d)(?=(\d{3})+(?!\d))/g, ' ');
+    };
     const infoText = () => {
       let textContainer = d3
         .select('svg')
@@ -55,7 +57,7 @@ export default function TotalCases() {
         .attr('x', width - 850)
         .attr('y', height - 560)
         .attr('id', 'title')
-        .text('COVID 2019 в Российской Федерации(Заражённые)')
+        .text('COVID 2019 в США(Заражённые)')
         .style('font-size', '1.5em');
     };
 
@@ -148,7 +150,7 @@ export default function TotalCases() {
               item.date +
                 ' -  Год/День/Месяц' +
                 '</br>' +
-                item.total_cases +
+                validNumber(item.total_cases) +
                 ' - Общее количество'
             )
             .style('left', x[0] + 'px')
@@ -184,7 +186,7 @@ export default function TotalCases() {
 
   return (
     <div>
-      <Header2 />
+      <UsaHeader />
       <h2 className='text-center text-4xl p-4'>
         Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
       </h2>

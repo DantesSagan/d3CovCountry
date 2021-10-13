@@ -1,5 +1,9 @@
-export const Main = '/Main'
-export const TotalCases = '/TotalCases';
-export const EveryDay = '/EveryDay';
-export const DeathTotalCases = '/DeathTotalCases';
-export const DeathEveryDay = '/DeathEveryDay';
+export const Main = '/Main';
+export const TotalCases = '/Russia/TotalCases';
+export const EveryDay = '/Russia/EveryDay';
+export const DeathTotalCases = '/Russia/DeathTotalCases';
+export const DeathEveryDay = '/Russia/DeathEveryDay';
+export const UsaTotalCases = '/Russia/Usa/TotalCases';
+export const UsaEveryDay = '/Russia/Usa/EveryDay';
+export const UsaDeathTotalCases = '/Russia/Usa/DeathTotalCases';
+export const UsaDeathEveryDay = '/Russia/Usa/DeathEveryDay';
