@@ -103,7 +103,9 @@ export default function DeathEveryDay() {
 
       return { xScale, dataDate };
     };
-
+    const validNumber = (num) => {
+      return num.toString().replace(/(?=\d)(?=(\d{3})+(?!\d))/g, ' ');
+    };
     const drawBars = () => {
       const tooltip = d3
         .select('body')
@@ -143,11 +145,11 @@ export default function DeathEveryDay() {
             .html(
               item.date +
                 ' - день/месяц <br/> ' +
-                item.new_deaths +
+                validNumber(item.new_deaths) +
                 ' - Новые случаи'
             )
-            .style('left', x[0] + 370 + 'px')
-            .style('top', y[1] + 470 + 'px');
+            .style('left', x + 50 + 'px')
+            .style('top', y + 250 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

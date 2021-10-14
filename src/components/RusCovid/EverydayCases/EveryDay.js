@@ -104,7 +104,9 @@ export default function EveryDay() {
 
       return { xScale, dataDate };
     };
-
+    const validNumber = (num) => {
+      return num.toString().replace(/(?=\d)(?=(\d{3})+(?!\d))/g, ' ');
+    };
     const drawBars = () => {
       const tooltip = d3
         .select('body')
@@ -145,11 +147,11 @@ export default function EveryDay() {
               item.date +
                 ' - Год/День/Месяц' +
                 '</br>' +
-                item.new_cases +
+                validNumber(item.new_cases) +
                 ' - Новые случаи'
             )
-            .style('left', x[0] + 370 + 'px')
-            .style('top', y[1] + 450 + 'px');
+            .style('left', x + 50 + 'px')
+            .style('top', y + 250 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

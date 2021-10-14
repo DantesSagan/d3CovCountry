@@ -153,8 +153,8 @@ export default function TotalCases() {
                 validNumber(item.total_cases) +
                 ' - Общее количество'
             )
-            .style('left', x[0] + 'px')
-            .style('top', y[1] + 120 + 'px');
+            .style('left', x + 'px')
+            .style('top', y + 220 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
