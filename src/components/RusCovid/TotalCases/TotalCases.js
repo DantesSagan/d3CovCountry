@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header2 from '../../Header2';
 
 import { pointer } from 'd3-selection';
@@ -10,6 +10,8 @@ export default function TotalCases() {
     'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
   );
   const [req] = useState(new XMLHttpRequest());
+  const ref = useRef();
+
   const width = 1200;
   const height = 600;
   const padding = 120;
@@ -34,7 +36,7 @@ export default function TotalCases() {
     let xAxisScale;
     let yAxisScale;
 
-    let svg = d3.select('#div1').attr('id', 'corona');
+    let svg = d3.select(ref.current).attr('id', 'corona');
 
     const infoText = () => {
       let textContainer = d3
@@ -72,7 +74,8 @@ export default function TotalCases() {
             return item.total_cases;
           }),
         ])
-        .range([0, height - 2 * padding]);
+        .nice()
+        .range([height - padding, height]);
 
       console.log(heightScale);
 
@@ -117,33 +120,37 @@ export default function TotalCases() {
       // var mouse = d3.pointer(d3.select('body').node()).map(function (d) {
       //   return parseInt(d);
       // });
+
+      const lineGenerator = d3
+        .line()
+        .x((d, i) => {
+          return xScale(i);
+        })
+        .y((d, i) => {
+          return heightScale(i);
+        })
+        .curve(d3.curveCardinal);
+
       svg
-        .selectAll('rect')
-        .data(values)
-        .enter()
-        .append('rect')
+        .selectAll('path')
+        .datum(values)
+        .join('path')
         .attr('class', 'bar')
         .attr('id', 'barOne')
-        .attr('width', (width - 2 * padding) / values.length)
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
         .attr('date', (item) => {
           return item.date;
         })
         .attr('total_cases', (item) => {
           return item.total_cases;
         })
-        .attr('height', (item) => {
-          return heightScale(item.total_cases);
-        })
-        .attr('x', (item, i) => {
-          return xScale(i);
-        })
-        .attr('y', (item) => {
-          return height - padding - heightScale(item.total_cases);
-        })
+        .attr('d', lineGenerator)
         .on('mousemove', (event, item) => {
           const [x, y] = pointer(event);
-          // const left = Math.min(width - 4 * item.date.length, x[0]);
-          // const top = Math.min(y[1]);
           tooltip.transition().duration(200).style('visibility', 'visible');
           tooltip
             .html(
@@ -190,7 +197,7 @@ export default function TotalCases() {
       <h2 className='text-center text-4xl p-4'>
         Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
       </h2>
-      <svg className='App' id='div1'>
+      <svg className='App' id='div1' ref={ref}>
         <text x={width - 900} y={height - 20}>
           Больше информации:{' '}
           <a href='https://ourworldindata.org/coronavirus#coronavirus-country-profiles'>
