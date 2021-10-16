@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header2 from '../../Header2';
 
+import { autoType } from 'd3-dsv';
 import { pointer } from 'd3-selection';
 import * as d3 from 'd3';
 
@@ -16,7 +17,7 @@ export default function TotalCases() {
   const height = 600;
   const padding = 120;
   useEffect(() => {
-    req.open('GET', url, true);
+    req.open('GET', url, autoType, true);
     req.onload = () => {
       data = JSON.parse(req.responseText);
       values = data;
@@ -28,10 +29,10 @@ export default function TotalCases() {
     };
     req.send();
     let data;
-    let values = [];
+    let values;
 
     let xScale;
-    let heightScale;
+    let yScale;
 
     let xAxisScale;
     let yAxisScale;
@@ -65,8 +66,9 @@ export default function TotalCases() {
       svg.attr('width', width);
       svg.attr('height', height);
     };
+
     const generateScales = () => {
-      heightScale = d3
+      yScale = d3
         .scaleLinear()
         .domain([
           0,
@@ -74,20 +76,18 @@ export default function TotalCases() {
             return item.total_cases;
           }),
         ])
-        .nice()
-        .range([height - padding, height]);
-
-      console.log(heightScale);
-
-      xScale = d3
-        .scaleLinear()
-        .domain([0, values.length - 1])
-        .range([padding, width - padding]);
+        .range([padding, height - padding])
+        .nice();
 
       const dataDate = values.map((item) => {
         return new Date(item.date);
       });
       console.log(dataDate);
+
+      xScale = d3
+        .scaleTime()
+        .domain([d3.min(dataDate), d3.max(dataDate)])
+        .range([width - padding, padding]);
 
       xAxisScale = d3
         .scaleTime()
@@ -103,12 +103,39 @@ export default function TotalCases() {
           }),
         ])
         .range([height - padding, padding]);
-
-      return { xScale, dataDate };
     };
+
     const validNumber = (num) => {
       return num.toString().replace(/(?=\d)(?=(\d{3})+(?!\d))/g, ' ');
     };
+
+    // const lineApprove = () => {
+    //   let yAccessor = (d) => d.total_cases;
+    //   let dateParser = d3.timeParse('%Y/%m/%d');
+    //   let xAccessor = (d) => dateParser(d.date);
+
+    //   console.log(yAccessor(values[0]));
+
+    //   let lineGenerator = d3
+    //     .line()
+    //     .x((d) => xScale(xAccessor(d)))
+    //     .y((d) => yScale(yAccessor(d)))
+    //     .curve(d3.curveBasis);
+
+    //   const lineSvg = svg
+    //     .append('path')
+    //     .attr('d', lineGenerator(values))
+    //     .attr('class', 'bar')
+    //     .attr('id', 'barOne')
+    //     .attr('fill', 'none')
+    //     .attr('stroke', 'steelblue')
+    //     .attr('stroke-width', 1.5)
+    //     .attr('stroke-linejoin', 'round')
+    //     .attr('stroke-linecap', 'round');
+
+    //   return { lineSvg };
+    // };
+
     const drawBars = () => {
       const tooltip = d3
         .select('body')
@@ -117,38 +144,30 @@ export default function TotalCases() {
         .style('visibility', 'hidden')
         .style('width', 'auto')
         .style('height', 'auto');
-      // var mouse = d3.pointer(d3.select('body').node()).map(function (d) {
-      //   return parseInt(d);
-      // });
 
-      const lineGenerator = d3
+      // let dateParser = d3.timeFormat('%Y/%m/%d');
+      let xAccessor = (d) => xScale(new Date(d.date));
+      let yAccessor = (d) => yScale(d.total_cases);
+
+      console.log(xAccessor(values[4]));
+
+      let lineGenerator = d3
         .line()
-        .x((d, i) => {
-          return xScale(i);
-        })
-        .y((d, i) => {
-          return heightScale(i);
-        })
-        .curve(d3.curveCardinal);
+        .x((d) => xAccessor(d))
+        .y((d) => yAccessor(d))
+        .curve(d3.curveStep);
 
       svg
-        .selectAll('path')
+        .append('path')
         .datum(values)
-        .join('path')
-        .attr('class', 'bar')
-        .attr('id', 'barOne')
+        .attr('d', lineGenerator)
         .attr('fill', 'none')
-        .attr('stroke', 'steelblue')
+        .attr('stroke', 'red')
         .attr('stroke-width', 1.5)
         .attr('stroke-linejoin', 'round')
         .attr('stroke-linecap', 'round')
-        .attr('date', (item) => {
-          return item.date;
-        })
-        .attr('total_cases', (item) => {
-          return item.total_cases;
-        })
-        .attr('d', lineGenerator)
+        .attr('date', xAccessor)
+        .attr('total_cases', yAccessor)
         .on('mousemove', (event, item) => {
           const [x, y] = pointer(event);
           tooltip.transition().duration(200).style('visibility', 'visible');
@@ -186,8 +205,6 @@ export default function TotalCases() {
         .attr('id', 'y-axis')
         .attr('transform', 'translate(' + padding + ',  0)')
         .style('font-size', '18px');
-
-      return { xAxis, svg, yAxis };
     };
   }, []);
 

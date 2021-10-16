@@ -32,10 +32,10 @@ export default function EveryDay() {
     let values = [];
 
     let xScale;
-    let heightScaleTwo;
+    let yScale;
 
     let xAxisScale;
-    let yAxisScaleTwo;
+    let yAxisScale;
 
     let svg = d3.select('#div2').attr('id', 'corona');
 
@@ -67,7 +67,7 @@ export default function EveryDay() {
       svg.attr('height', height);
     };
     const generateScales = () => {
-      heightScaleTwo = d3
+      yScale = d3
         .scaleLinear()
         .domain([
           0,
@@ -75,24 +75,25 @@ export default function EveryDay() {
             return item.new_cases;
           }),
         ])
-        .range([0, height - 2 * padding]);
-      console.log(heightScaleTwo);
-      xScale = d3
-        .scaleLinear()
-        .domain([0, values.length - 1])
-        .range([padding, width - padding]);
+        .range([padding, height - padding])
+        .nice();
 
       const dataDate = values.map((item) => {
         return new Date(item.date);
       });
       console.log(dataDate);
 
+      xScale = d3
+        .scaleTime()
+        .domain([d3.min(dataDate), d3.max(dataDate)])
+        .range([width - padding, padding]);
+
       xAxisScale = d3
         .scaleTime()
         .domain([d3.min(dataDate), d3.max(dataDate)])
         .range([padding, width - padding]);
 
-      yAxisScaleTwo = d3
+      yAxisScale = d3
         .scaleLinear()
         .domain([
           0,
@@ -101,8 +102,6 @@ export default function EveryDay() {
           }),
         ])
         .range([height - padding, padding]);
-
-      return { xScale, dataDate };
     };
     const validNumber = (num) => {
       return num.toString().replace(/(?=\d)(?=(\d{3})+(?!\d))/g, ' ');
@@ -116,53 +115,52 @@ export default function EveryDay() {
         .style('width', 'auto')
         .style('height', 'auto');
 
+      let xAccessor = (d) => xScale(new Date(d.date));
+      let yAccessor = (d) => yScale(d.new_cases);
+
+      console.log(xAccessor(values[4]));
+
+      let lineGenerator = d3
+        .line()
+        .x((d) => xAccessor(d))
+        .y((d) => yAccessor(d))
+        .curve(d3.curveStep);
+
       svg
-        .selectAll('rect')
-        .data(values)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('id', 'barTwo')
-        .attr('width', (width - 2 * padding) / values.length)
-        .attr('date', (item) => {
-          return item.date;
-        })
-        .attr('new_cases', (item) => {
-          return item.new_cases;
-        })
-        .attr('height', (item) => {
-          return heightScaleTwo(item.new_cases);
-        })
-        .attr('x', (item, i) => {
-          return xScale(i);
-        })
-        .attr('y', (item) => {
-          return height - padding - heightScaleTwo(item.new_cases);
-        })
-        .on('mouseover', (event, item) => {
+        .append('path')
+        .datum(values)
+        .attr('d', lineGenerator)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
+        .attr('date', xAccessor)
+        .attr('total_cases', yAccessor)
+        .on('mousemove', (event, item) => {
           const [x, y] = pointer(event);
-          tooltip.transition().style('visibility', 'visible');
+          tooltip.transition().duration(200).style('visibility', 'visible');
           tooltip
             .html(
-              item.date +
-                ' - Год/День/Месяц' +
+              new Date(item.date) +
+                ' -  Год/День/Месяц' +
                 '</br>' +
                 validNumber(item.new_cases) +
-                ' - Новые случаи'
+                ' - Общее количество'
             )
             .style('left', x + 50 + 'px')
-            .style('top', y + 250 + 'px');
+            .style('top', y + 220 + 'px');
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })
         .on('mouseout', () => {
-          tooltip.transition().style('visibility', 'hidden');
+          tooltip.transition().duration(200).style('visibility', 'hidden');
         });
     };
 
     const generateAxis = () => {
       const xAxis = d3.axisBottom(xAxisScale);
-      const yAxisTwo = d3.axisLeft(yAxisScaleTwo);
+      const yAxisTwo = d3.axisLeft(yAxisScale);
       svg
         .append('g')
         .call(xAxis)
@@ -176,7 +174,6 @@ export default function EveryDay() {
         .attr('id', 'y-axis')
         .attr('transform', 'translate(' + padding + ',  0)')
         .style('font-size', '18px');
-      return { xAxis, svg, yAxisTwo };
     };
   }, []);
   return (
