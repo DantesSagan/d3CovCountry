@@ -8,7 +8,7 @@ import * as d3 from 'd3';
 
 export default function EveryDay() {
   const [url] = useState(
-    'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/ba79245bea3aeb80764658fdc468693c47bbbb2c/COVID2019.json'
+    'https://gist.githubusercontent.com/DantesSagan/942626526dc1439bf93bc6eb5dc110ef/raw/7d81b6b493ef4b35d260d0ea0f435d986dee5ea1/COVID2019.json'
   );
   const [req] = useState(new XMLHttpRequest());
 
@@ -50,7 +50,7 @@ export default function EveryDay() {
         .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('x', -350)
-        .attr('y', 150)
+        .attr('y', 20)
         .text('Ежедневная статистика(тыс)');
 
       textContainer

@@ -7,7 +7,7 @@ import UsaHeader from '../../UsaHeader';
 
 export default function DeathEveryDay() {
   const [url] = useState(
-    'https://gist.githubusercontent.com/DantesSagan/fd05ceffb3a32c2bc4008000168d98a6/raw/e8f0294d7571ec81d297544fc6b94db3f26f3069/CovidUsa.json'
+    'https://gist.githubusercontent.com/DantesSagan/fd05ceffb3a32c2bc4008000168d98a6/raw/7425b1187354e5d7d1e1b86bc219acae3620659f/CovidUsa.json'
   );
   const [req] = useState(new XMLHttpRequest());
 
