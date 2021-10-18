@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../components/routes/routes';
 
-
 export default function Header2() {
   return (
     <div>
@@ -10,7 +9,7 @@ export default function Header2() {
           <div className='border border-black rounded-2xl m-2'>
             <div className='button p-2'>
               <Link to={ROUTES.TotalCases}>
-               Россия - общая статистика заражённых
+                Россия - общая статистика заражённых
               </Link>
             </div>
             <div className='button p-2'>

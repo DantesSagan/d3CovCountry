@@ -190,21 +190,35 @@ export default function TotalCases() {
     };
 
     const generateAxis = () => {
-      const xAxis = d3.axisBottom(xAxisScale);
-      const yAxis = d3.axisLeft(yAxisScale);
+      const xAxis = d3.axisBottom(xAxisScale).ticks(10);
+      const yAxis = d3.axisLeft(yAxisScale).ticks(10);
       svg
         .append('g')
         .call(xAxis)
         .attr('id', 'x-axis')
         .attr('transform', 'translate(0, ' + (height - padding) + ')')
-        .style('font-size', '18px');
+        .style('font-size', '18px')
+        .call((g) =>
+          g
+            .selectAll('.tick line')
+            .clone()
+            .attr('y1', -360)
+            .attr('stroke-opacity', 0.1)
+        );
 
       svg
         .append('g')
         .call(yAxis)
         .attr('id', 'y-axis')
         .attr('transform', 'translate(' + padding + ',  0)')
-        .style('font-size', '18px');
+        .style('font-size', '18px')
+        .call((g) =>
+          g
+            .selectAll('.tick line')
+            .clone()
+            .attr('x2', width - padding * 2)
+            .attr('stroke-opacity', 0.1)
+        );
     };
   }, []);
 
