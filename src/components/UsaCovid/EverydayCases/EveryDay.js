@@ -31,7 +31,7 @@ export default function EveryDay() {
     let values = [];
 
     let xScale;
-    let heightScaleTwo;
+    let yScale;
 
     let xAxisScale;
     let yAxisScaleTwo;
@@ -68,7 +68,7 @@ export default function EveryDay() {
       svg.attr('height', height);
     };
     const generateScales = () => {
-      heightScaleTwo = d3
+      yScale = d3
         .scaleLinear()
         .domain([
           0,
@@ -76,17 +76,20 @@ export default function EveryDay() {
             return item.new_cases;
           }),
         ])
-        .range([0, height - 2 * padding]);
-      console.log(heightScaleTwo);
-      xScale = d3
-        .scaleLinear()
-        .domain([0, values.length - 1])
-        .range([padding, width - padding]);
+        .range([padding, height - padding]);
+
+      console.log(yScale);
 
       const dataDate = values.map((item) => {
         return new Date(item.date);
       });
+
       console.log(dataDate);
+
+      xScale = d3
+        .scaleLinear()
+        .domain([d3.min(dataDate), d3.max(dataDate)])
+        .range([width - padding, padding]);
 
       xAxisScale = d3
         .scaleTime()
@@ -115,42 +118,48 @@ export default function EveryDay() {
         .style('width', 'auto')
         .style('height', 'auto');
 
+      // let dateParser = d3.timeFormat('%Y/%m/%d');
+      let xAccessor = (d) => xScale(new Date(d.date));
+      let yAccessor = (d) => yScale(d.new_cases);
+      // if ((d) => d.people_vaccinated === '') {
+      //   return 0;
+      // } else if ((d) => d.people_vaccinated > 0) {
+      //   let yAccessorTwo = yScaleTwo((d) => d.people_vaccinated);
+      //   return yAccessorTwo;
+      // }
+      console.log(xAccessor(values[4]));
+
+      let lineGenerator = d3
+        .line()
+        .x((d) => xAccessor(d))
+        .y((d) => yAccessor(d))
+        .curve(d3.curveStep);
+
       svg
-        .selectAll('rect')
-        .data(values)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('id', 'barTwo')
-        .attr('width', (width - 2 * padding) / values.length)
-        .attr('date', (item) => {
-          return item.date;
-        })
-        .attr('new_cases', (item) => {
-          return item.new_cases;
-        })
-        .attr('height', (item) => {
-          return heightScaleTwo(item.new_cases);
-        })
-        .attr('x', (item, i) => {
-          return xScale(i);
-        })
-        .attr('y', (item) => {
-          return height - padding - heightScaleTwo(item.new_cases);
-        })
-        .on('mouseover', (event, item) => {
+        .append('path')
+        .datum(values)
+        .attr('d', lineGenerator)
+        .attr('fill', 'none')
+        .attr('stroke', 'red')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
+        .attr('date', xAccessor)
+        .attr('total_cases', yAccessor)
+        .on('mousemove', (event, item) => {
           const [x, y] = pointer(event);
           tooltip.transition().style('visibility', 'visible');
-          tooltip
-            .html(
-              item.date +
-                ' - Год/День/Месяц' +
+          tooltip.html(
+            xScale(
+              validNumber(new Date(item.date)) +
+                ' -  Год/День/Месяц' +
                 '</br>' +
-                validNumber(item.new_cases) +
-                ' - Новые случаи'
+                yScale(item.new_cases) +
+                ' - Общее количество'
             )
-            .style('left', x + 50+ 'px')
-            .style('top', y + 250 + 'px');
+              .style('left', x + 'px')
+              .style('top', y + 'px')
+          );
 
           document.querySelector('#tooltip').setAttribute('date', item.date);
         })

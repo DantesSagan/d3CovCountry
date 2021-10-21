@@ -5,8 +5,14 @@
   fill: white;
 }
 #barTwo {
-  fill: blue;
+  fill: red;
 }
 #barTwo:hover {
+  fill: white;
+}
+#barThree {
+  fill: black;
+}
+#barThree:hover {
   fill: white;
 }

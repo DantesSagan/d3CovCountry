@@ -202,10 +202,10 @@ export default function TotalCases() {
           tooltip.transition().duration(200).style('visibility', 'visible');
           tooltip
             .html(
-              item.date +
+              xScale(new Date(item.date)) +
                 ' -  Год/День/Месяц' +
                 '</br>' +
-                validNumber(item.total_cases) +
+                validNumber(yScaleTwo(item.total_deaths)) +
                 ' - Общее количество'
             )
             .style('left', x + 50 + 'px')
@@ -246,8 +246,7 @@ export default function TotalCases() {
         })
         .on('mouseout', () => {
           tooltip.transition().duration(200).style('visibility', 'hidden');
-        })
-        
+        });
     };
 
     const generateAxis = () => {
