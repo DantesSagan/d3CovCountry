@@ -4,6 +4,7 @@ import Header2 from '../../Header2';
 
 import { autoType } from 'd3-dsv';
 import { pointer } from 'd3-selection';
+import { easeLinear } from 'd3-ease';
 import * as d3 from 'd3';
 
 export default function TotalCases() {
@@ -17,7 +18,7 @@ export default function TotalCases() {
   const height = 600;
   const padding = 120;
   useEffect(() => {
-    req.open('GET', url, autoType, true);
+    req.open('GET', url, autoType);
     req.onload = () => {
       data = JSON.parse(req.responseText);
       values = data;
@@ -28,14 +29,19 @@ export default function TotalCases() {
       infoText();
     };
     req.send();
+
     let data;
     let values;
 
     let xScale;
     let yScale;
 
+    let yScaleTwo;
+
     let xAxisScale;
     let yAxisScale;
+
+    let yAxisScaleTwo;
 
     let svg = d3.select(ref.current).attr('id', 'corona');
 
@@ -77,6 +83,17 @@ export default function TotalCases() {
           }),
         ])
         .range([padding, height - padding])
+        .nice();
+
+      yScaleTwo = d3
+        .scaleLinear()
+        .domain([
+          0,
+          d3.max(values, (item) => {
+            return item.total_deaths;
+          }),
+        ])
+        .range([padding * 3.9, height - padding])
         .nice();
 
       const dataDate = values.map((item) => {
@@ -148,13 +165,25 @@ export default function TotalCases() {
       // let dateParser = d3.timeFormat('%Y/%m/%d');
       let xAccessor = (d) => xScale(new Date(d.date));
       let yAccessor = (d) => yScale(d.total_cases);
-
+      let yAccessorTwo = (d) => yScaleTwo(d.total_deaths);
+      // if ((d) => d.people_vaccinated === '') {
+      //   return 0;
+      // } else if ((d) => d.people_vaccinated > 0) {
+      //   let yAccessorTwo = yScaleTwo((d) => d.people_vaccinated);
+      //   return yAccessorTwo;
+      // }
       console.log(xAccessor(values[4]));
 
       let lineGenerator = d3
         .line()
         .x((d) => xAccessor(d))
         .y((d) => yAccessor(d))
+        .curve(d3.curveStep);
+
+      let lineGeneratorTwoLine = d3
+        .line()
+        .x((d) => xAccessor(d))
+        .y((d) => yAccessorTwo(d))
         .curve(d3.curveStep);
 
       svg
@@ -187,6 +216,38 @@ export default function TotalCases() {
         .on('mouseout', () => {
           tooltip.transition().duration(200).style('visibility', 'hidden');
         });
+
+      svg
+        .append('path')
+        .datum(values)
+        .attr('d', lineGeneratorTwoLine)
+        .attr('fill', 'none')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-linejoin', 'round')
+        .attr('stroke-linecap', 'round')
+        .attr('date', xAccessor)
+        .attr('total_cases', yAccessorTwo)
+        .on('mousemove', (event, item) => {
+          const [x, y] = pointer(event);
+          tooltip.transition().duration(200).style('visibility', 'visible');
+          tooltip
+            .html(
+              item.date +
+                ' -  Год/День/Месяц' +
+                '</br>' +
+                validNumber(item.total_deaths) +
+                ' - Общее количество'
+            )
+            .style('left', x + 50 + 'px')
+            .style('top', y + 220 + 'px');
+
+          document.querySelector('#tooltip').setAttribute('date', item.date);
+        })
+        .on('mouseout', () => {
+          tooltip.transition().duration(200).style('visibility', 'hidden');
+        })
+        
     };
 
     const generateAxis = () => {
@@ -226,7 +287,8 @@ export default function TotalCases() {
     <div>
       <Header2 />
       <h2 className='text-center text-4xl p-4'>
-        Общая статистика заражённых COVID 2019 с 2020.03 - 2021.08
+        Общая статистика заражённых COVID 2019 с 2020.03 - 2021.10 <br />
+        (и смертей)
       </h2>
       <svg className='App' id='div1' ref={ref}>
         <text x={width - 900} y={height - 20}>
