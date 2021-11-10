@@ -188,7 +188,7 @@ export default function DeathTotalCases() {
             .attr('x2', width - padding * 2)
             .attr('stroke-opacity', 0.1)
         );
-
+// there was changing
       return { xAxis, svg, yAxis };
     };
   }, []);
