@@ -262,7 +262,7 @@ export default function TotalCases() {
           g
             .selectAll('.tick line')
             .clone()
-            .attr('y1', (-height - padding) / 2)
+            .attr('y1', -360)
             .attr('stroke-opacity', 0.1)
         );
 

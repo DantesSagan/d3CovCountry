@@ -171,7 +171,7 @@ export default function EveryDay() {
           g
             .selectAll('.tick line')
             .clone()
-            .attr('y1', (-height - padding) / 2 - 75)
+            .attr('y1', -420)
             .attr('stroke-opacity', 0.1)
         );
 

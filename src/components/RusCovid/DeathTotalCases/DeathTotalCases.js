@@ -166,20 +166,14 @@ export default function DeathTotalCases() {
         .call(xAxis)
         .attr('id', 'x-axis')
         .attr('transform', 'translate(0, ' + (height - padding) + ')')
-        .style('font-size', '18px')
-        .call((g) =>
-          g
-            .selectAll('.tick line')
-            .clone()
-            .attr('y1', (-height - padding) / 2)
-            .attr('stroke-opacity', 0.1)
-        );
+        .style('font-size', '18px');
 
       svg
         .append('g')
         .call(yAxis)
         .attr('id', 'y-axis')
         .attr('transform', 'translate(' + padding + ',  0)')
+<<<<<<< HEAD
         .style('font-size', '18px')
         .call((g) =>
           g
@@ -189,6 +183,10 @@ export default function DeathTotalCases() {
             .attr('stroke-opacity', 0.1)
         );
 // there was changing
+=======
+        .style('font-size', '18px');
+
+>>>>>>> parent of 336aaf2 (formula y1 done)
       return { xAxis, svg, yAxis };
     };
   }, []);
